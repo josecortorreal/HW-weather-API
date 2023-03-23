@@ -5,3 +5,14 @@ const searchInput = document.querySelector('#search-input');
 const currentWeatherDiv = document.querySelector('#current-weather');
 const forecastDiv = document.querySelector('#forecast');
 const searchHistoryDiv = document.querySelector('#search-history')
+
+
+let searchHistory = [];
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const city = searchInput.value.trim();
+  if (!city) {
+    return;
+  }
