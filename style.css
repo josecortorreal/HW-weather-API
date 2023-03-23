@@ -19,4 +19,54 @@
     border: 1px solid #ccc;
   }
 
+  form button {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+  }
+  
+  #current-weather, #forecast, #search-history {
+    margin-bottom: 1rem;
+  }
+  
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+  }
+  
+  .card h2 {
+    margin-top: 0;
+  }
+  
+  .card img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .card .date {
+    font-size: 0.75rem;
+    color: #666;
+  }
+  
+  .card .temperature {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .card .humidity, .card .wind-speed {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #666;
+  }
+ 
+       
+  
+  
+  
+  
   
