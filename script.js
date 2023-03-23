@@ -16,3 +16,10 @@ form.addEventListener('submit', e => {
   if (!city) {
     return;
   }
+
+  searchHistory.unshift(city);
+  if (searchHistory.length > 5) {
+    searchHistory.pop();
+  }
+  localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+  renderSearchHistory();
