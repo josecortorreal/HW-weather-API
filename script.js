@@ -1,4 +1,4 @@
-const apiKey = 'api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}';
+const apiKey = '5eed30c0ca4b6a10726289d2d7f8a64e';
 
 const form = document.querySelector('#search-form');
 const searchInput = document.querySelector('#search-input');
@@ -7,8 +7,9 @@ const forecastContainer = document.querySelector('#forecast');
 const searchHistory = document.querySelector('#search-history');
 const searchHistoryArray = [];
 
-async function getCurrentWeather(city) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+async function getCoordinates(city) {
+  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+
   try {
     const response = await fetch(url);
     if (response.ok) {
@@ -23,8 +24,25 @@ async function getCurrentWeather(city) {
   }
 }
 
-async function getForecast(city) {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
+async function getCurrentWeather(lat,lon) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error('City not found');
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+async function getForecast(lat, lon) {
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   try {
     const response = await fetch(url);
     if (response.ok) {
@@ -71,3 +89,34 @@ function displayCurrentWeather(city, data) {
     html += '</div>';
     forecastContainer.innerHTML = html;
   }
+ 
+  function getWeatherData(city, lat, lon) {
+    Promise.all([getCurrentWeather(lat, lon), getForecast(lat, lon)])
+      .then(data => {
+        const [currentWeatherData, forecastData] = data;
+        displayCurrentWeather(city, currentWeatherData);
+        displayForecast(city, forecastData);
+        if (!searchHistoryArray.includes(city)) {
+          searchHistoryArray.push(city);
+          const searchHistoryItem = document.createElement('div');
+          searchHistoryItem.innerHTML = `<button type="button">${city}</button>`;
+          searchHistoryItem.addEventListener('click', () => {
+            getWeatherData(city);
+          });
+          searchHistory.appendChild(searchHistoryItem); 
+        }
+      });
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // prevent form submission
+    const city = searchInput.value.trim(); // get user input and remove leading/trailing spaces
+    if (city) {
+      const coordinateData = await getCoordinates(city); // pass city into getWeatherData function
+      getWeatherData(city, coordinateData[0].lat, coordinateData[0].lon)
+      searchInput.value = ''; // clear search input field
+    }
+  });
+
+// Add event listener for searchButton or form
+  // inside event listener function get value from user input and pass into getWeatherData
