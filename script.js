@@ -8,7 +8,7 @@ const searchHistory = document.querySelector('#search-history');
 const searchHistoryArray = [];
 
 async function getCoordinates(city) {
-  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
 
   try {
     const response = await fetch(url);
